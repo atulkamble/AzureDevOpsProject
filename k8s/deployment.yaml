@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azuredevopsapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels: { app: azuredevopsapp }
+  template:
+    metadata:
+      labels: { app: azuredevopsapp }
+    spec:
+      containers:
+        - name: azuredevopsapp
+          image: docker.io/atuljkamble/azuredevopsproject:dev
+          ports: [{ containerPort: 5000 }]
