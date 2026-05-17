@@ -12,5 +12,5 @@ spec:
     spec:
       containers:
         - name: azuredevopsapp
-          image: docker.io/atuljkamble/azuredevopsproject:staging
+          image: docker.io/atuljkamble/azuredevopsproject:prod
           ports: [{ containerPort: 5000 }]
