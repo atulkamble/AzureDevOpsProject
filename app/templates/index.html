@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-sub">Welcome back — here's what's happening today.</p>
+  </div>
+  <button class="btn btn-primary" id="refreshBtn">Refresh stats</button>
+</div>
+
+<!-- Stat cards -->
+<div class="stats-grid" id="statsGrid">
+  <!-- Populated by JS -->
+  <div class="stat-card skeleton"></div>
+  <div class="stat-card skeleton"></div>
+  <div class="stat-card skeleton"></div>
+  <div class="stat-card skeleton"></div>
+</div>
+
+<!-- Activity & Quick actions -->
+<div class="content-grid">
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Recent Activity</h2>
+      <span class="badge badge-green">Live</span>
+    </div>
+    <ul class="activity-list">
+      <li class="activity-item">
+        <span class="activity-dot dot-blue"></span>
+        <div>
+          <p class="activity-text">New user <strong>alice@example.com</strong> signed up</p>
+          <p class="activity-time">2 minutes ago</p>
+        </div>
+      </li>
+      <li class="activity-item">
+        <span class="activity-dot dot-green"></span>
+        <div>
+          <p class="activity-text">Order <strong>#8821</strong> shipped successfully</p>
+          <p class="activity-time">14 minutes ago</p>
+        </div>
+      </li>
+      <li class="activity-item">
+        <span class="activity-dot dot-yellow"></span>
+        <div>
+          <p class="activity-text">Server CPU spiked to <strong>87%</strong></p>
+          <p class="activity-time">1 hour ago</p>
+        </div>
+      </li>
+      <li class="activity-item">
+        <span class="activity-dot dot-purple"></span>
+        <div>
+          <p class="activity-text">Deploy <strong>v2.4.1</strong> completed</p>
+          <p class="activity-time">3 hours ago</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Quick Actions</h2>
+    </div>
+    <div class="action-grid">
+      <button class="action-btn" onclick="sendEcho()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+        Send Echo
+      </button>
+      <button class="action-btn" onclick="fetchStats()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Reload Stats
+      </button>
+      <a href="{{ url_for('features') }}" class="action-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Features
+      </a>
+      <a href="{{ url_for('about') }}" class="action-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        About
+      </a>
+    </div>
+
+    <div id="echoResult" class="echo-result hidden"></div>
+  </section>
+</div>
+
+<script>
+async function fetchStats() {
+  const grid = document.getElementById("statsGrid");
+  grid.innerHTML = '<div class="stat-card skeleton"></div>'.repeat(4);
+  const res = await fetch("/api/stats");
+  const data = await res.json();
+  grid.innerHTML = data.map(s => `
+    <div class="stat-card">
+      <p class="stat-label">${s.label}</p>
+      <p class="stat-value">${s.value}</p>
+      <p class="stat-change ${s.up ? 'change-up' : 'change-down'}">
+        ${s.up ? '▲' : '▼'} ${s.change}
+      </p>
+    </div>`).join("");
+}
+
+async function sendEcho() {
+  const payload = { action: "ping", from: "dashboard", ts: Date.now() };
+  const res = await fetch("/api/echo", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  const box = document.getElementById("echoResult");
+  box.classList.remove("hidden");
+  box.textContent = JSON.stringify(data, null, 2);
+}
+
+document.getElementById("refreshBtn").addEventListener("click", fetchStats);
+fetchStats();
+</script>
+{% endblock %}

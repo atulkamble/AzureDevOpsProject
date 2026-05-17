@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">About</h1>
+    <p class="page-sub">Stack details and getting started.</p>
+  </div>
+</div>
+
+<div class="content-grid">
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Tech Stack</h2>
+    </div>
+    <ul class="stack-list">
+      <li class="stack-item"><span class="stack-tag tag-python">Python</span> Flask micro-framework</li>
+      <li class="stack-item"><span class="stack-tag tag-html">HTML</span> Jinja2 templating</li>
+      <li class="stack-item"><span class="stack-tag tag-css">CSS</span> Custom properties + Grid/Flex</li>
+      <li class="stack-item"><span class="stack-tag tag-js">JS</span> Vanilla ES2022 — no build step</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Getting Started</h2>
+    </div>
+    <div class="code-block">
+      <pre><code># 1. Create a virtual environment
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Run the dev server
+python app.py</code></pre>
+    </div>
+    <p class="mt-4 text-muted">Then open <a class="link" href="http://localhost:5000" target="_blank">http://localhost:5000</a></p>
+  </section>
+</div>
+
+{% endblock %}

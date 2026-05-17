@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Features</h1>
+    <p class="page-sub">Everything included out of the box.</p>
+  </div>
+</div>
+
+<div class="features-grid">
+  {% set items = [
+    ("Modern UI", "Responsive sidebar layout with light/dark theme toggling and smooth transitions.", "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"),
+    ("REST API", "Built-in JSON endpoints — /api/stats and /api/echo — ready to extend.", "M4 6h16M4 12h16M4 18h7"),
+    ("Jinja2 Templates", "Base template with block inheritance keeps HTML DRY and maintainable.", "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"),
+    ("Dark Mode", "CSS custom properties power instant theme switching with zero flicker.", "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"),
+    ("Static Assets", "Organised static/ folder for CSS and JS — easily swap in a bundler.", "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"),
+    ("Easy Deploy", "Single requirements.txt. Run with gunicorn or deploy to any PaaS.", "M12 19V6M5 12l7-7 7 7")
+  ] %}
+
+  {% for name, desc, path in items %}
+  <div class="feature-card">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="{{ path }}"/>
+      </svg>
+    </div>
+    <h3 class="feature-name">{{ name }}</h3>
+    <p class="feature-desc">{{ desc }}</p>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
